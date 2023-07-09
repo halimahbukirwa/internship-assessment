@@ -38,6 +38,7 @@ while state:
             "target_language": target_language,
             "text": text }
 
+            #Translation from one local language to another
             if (source_language or target_language) != "English":
                  payload = {
                       "source_language": source_language,
@@ -68,6 +69,7 @@ while state:
                     print("Error:", response.status_code, response.text)
 
             else:
+                #Translating to a local language and English and from English to a local language
                 #Passing data obtained from the users into the /translate endpoint
                 response = requests.post(f"{url}/tasks/translate", headers=headers, json=payload)
                 #Response generation
@@ -79,7 +81,8 @@ while state:
 
         else:
             print('Text input should be more than 3 characters')
-
+        
+        #Prompting the user to enter y to continue translating or n to stop tanslating
         choice = input('Do you wnat to continue translating, please enter y/n ?')
 
         if choice == 'y':
