@@ -38,15 +38,45 @@ while state:
             "target_language": target_language,
             "text": text }
 
-            #Passing data obtained from the users into the /translate endpoint
-            response = requests.post(f"{url}/tasks/translate", headers=headers, json=payload)
+            if (source_language or target_language) != "English":
+                 payload = {
+                      "source_language": source_language,
+                      "target_language": "English",
+                      "text": text }
 
-            #Response generation
-            if response.status_code == 200:
-                translated_text = response.json()["text"]
-                print("Translate text:", translated_text)
+                 #Passing data obtained from the users into the /translate endpoint
+                 response = requests.post(f"{url}/tasks/translate", headers=headers, json=payload)
+
+                 #Response generation
+                 if response.status_code == 200:
+                    translated_text = response.json()["text"]
+                    payload = {
+                        "source_language": "English",
+                        "target_language": target_language,
+                        "text": translated_text }
+                    
+                    #Passing data obtained from the users into the /translate endpoint
+                    response = requests.post(f"{url}/tasks/translate", headers=headers, json=payload)
+                    #Response generation
+                    if response.status_code == 200:
+                        translated_text2 = response.json()["text"]
+                        print("Translate text:", translated_text2)
+                    else:
+                        print("Error:", response.status_code, response.text)
+                
+                 else:
+                    print("Error:", response.status_code, response.text)
+
             else:
-                print("Error:", response.status_code, response.text)
+                #Passing data obtained from the users into the /translate endpoint
+                response = requests.post(f"{url}/tasks/translate", headers=headers, json=payload)
+                #Response generation
+                if response.status_code == 200:
+                    translated_text= response.json()["text"]
+                    print("Translate text:", translated_text)
+                else:
+                    print("Error:", response.status_code, response.text)
+
         else:
             print('Text input should be more than 3 characters')
 
